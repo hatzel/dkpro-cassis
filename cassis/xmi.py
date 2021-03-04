@@ -224,9 +224,11 @@ class CasXmiDeserializer:
 
                 # Map from offsets in UIMA UTF-16 based offsets to Unicode codepoints
                 if typesystem.is_instance_of(fs.type, "uima.tcas.Annotation"):
-                    fs.begin = sofa._offset_converter.uima_to_cassis(fs.begin)
-                    fs.end = sofa._offset_converter.uima_to_cassis(fs.end)
-
+                    try:
+                        fs.begin = sofa._offset_converter.uima_to_cassis(fs.begin)
+                        fs.end = sofa._offset_converter.uima_to_cassis(fs.end)
+                    except KeyError:
+                        pass
                 view.add_annotation(fs, keep_id=True)
 
         cas._xmi_id_generator = IdGenerator(self._max_xmi_id + 1)
